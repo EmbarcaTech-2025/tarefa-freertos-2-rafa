@@ -32,22 +32,35 @@ include(${FREERTOS_PATH}/portable/ThirdParty/GCC/RP2040/FreeRTOS_Kernel_import.c
 # Define project
 project(embarcatech-tarefa-freertos-2 C CXX ASM)
 
-# Initialize the Raspberry Pi Pico SDK
+# Initialize the Raspberry Pi Pico SDK kit
 pico_sdk_init()
 
 add_executable(embarcatech-tarefa-freertos-2
-    main.c
+    app/main.c
+    hal/buttons.c
+    hal/led.c
+    hal/buzzers.c
+    drivers/ssd1306_i2c.c
+    hal/display.c 
+    hal/microphone.c 
+    hal/joystick.c 
 )
 
 target_include_directories(embarcatech-tarefa-freertos-2 PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
     ${CMAKE_CURRENT_LIST_DIR}/include
+    ${CMAKE_CURRENT_LIST_DIR}/hal
 )
 
 target_link_libraries(embarcatech-tarefa-freertos-2 
     pico_stdlib 
     FreeRTOS-Kernel-Heap4 
+    hardware_adc
+    hardware_dma
+    hardware_pwm
+    hardware_spi
     hardware_i2c
+    hardware_clocks
     )
 
 pico_add_extra_outputs(embarcatech-tarefa-freertos-2)
